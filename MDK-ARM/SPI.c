@@ -6,8 +6,8 @@
 //DC pin -> PE10
 
 extern SPI_HandleTypeDef hspi1;
-volatile uint16_t LCD_HEIGHT = 320;
-volatile uint16_t LCD_WIDTH	 = 480;
+volatile uint16_t LCD_HEIGHT = 480;
+volatile uint16_t LCD_WIDTH	 = 320;
 
 
 

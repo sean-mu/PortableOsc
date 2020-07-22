@@ -93,7 +93,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 	HAL_SPI_MspInit(&hspi1);
 	LCD_Init();
-	LCD_Fill_Screen(GREEN);
+	LCD_Fill_Screen(PINK);
 
   /* USER CODE END 2 */
 
