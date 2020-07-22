@@ -56,19 +56,19 @@ void LCD_Enable(void)
 
 void LCD_Set_Address(uint16_t X1, uint16_t Y1, uint16_t X2, uint16_t Y2)
 {
-	writecmd(0x2A);
+	writecmd(0x2A); //Column address set
 	write8(X1>>8);
 	write8(X1);
 	write8(X2>>8);
 	write8(X2);
 
-	writecmd(0x2B);
+	writecmd(0x2B); //Row address set
 	write8(Y1>>8);
 	write8(Y1);
 	write8(Y2>>8);
 	write8(Y2);
 
-	writecmd(0x2C);
+	writecmd(0x2C);  //Write to Ram
 }
 
 void LCD_Draw_Color(uint16_t Color)
@@ -82,10 +82,10 @@ void LCD_Draw_Color(uint16_t Color)
 }
 
 
-/*Sends block colour information to LCD*/
+
 void LCD_Draw_Color_Burst(uint16_t Color, uint32_t Size)
 {
-	//SENDS COLOUR
+	
 	uint32_t Buffer_Size = 0;
 	if((Size*2) < BURST_MAX_SIZE)
 	{
@@ -131,3 +131,30 @@ void LCD_Fill_Screen(uint16_t Color)
 	LCD_Draw_Color_Burst(Color, LCD_WIDTH*LCD_HEIGHT);	
 }
 
+void LCD_Vertical_Line(uint16_t x, uint16_t y, uint16_t height, uint16_t color)
+{
+	//Error check x or y out of bounds
+	if((x >= LCD_WIDTH) || (y >= LCD_HEIGHT)) return;
+	if((y+height-1) >= LCD_HEIGHT) height = LCD_HEIGHT-y;
+	LCD_Set_Address(x,y,x,y+height-1);
+	LCD_Draw_Color_Burst(color,height);
+}
+
+void LCD_Horizontal_Line(uint16_t x, uint16_t y, uint16_t width, uint16_t color)
+{
+	//Error check x or y out of bounds
+	if((x >= LCD_WIDTH) || (y >= LCD_HEIGHT)) return;
+	if((x+width-1) >= LCD_WIDTH) width = LCD_WIDTH-x;
+	LCD_Set_Address(x,y,x+width-1,y);
+	LCD_Draw_Color_Burst(color,width);
+}
+
+void LCD_Draw_Rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color)
+{
+	//Error check x or y out of bounds
+	if((x >= LCD_WIDTH) || (y >= LCD_HEIGHT)) return;
+	if((y+height-1) >= LCD_HEIGHT) height = LCD_HEIGHT-y;
+	if((x+width-1) >= LCD_WIDTH) width = LCD_WIDTH-x;
+	LCD_Set_Address(x,y,x+width-1,y+height-1);
+	LCD_Draw_Color_Burst(color,width*height);
+}

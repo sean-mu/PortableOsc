@@ -55,6 +55,9 @@ void LCD_Set_Address(uint16_t X1, uint16_t Y1, uint16_t X2, uint16_t Y2);
 void LCD_Draw_Color(uint16_t Color);
 void LCD_Draw_Color_Burst(uint16_t Color, uint32_t Size);
 void LCD_Fill_Screen(uint16_t Color);
+void LCD_Vertical_Line(uint16_t x, uint16_t y, uint16_t height, uint16_t color);
+void LCD_Horizontal_Line(uint16_t x, uint16_t y, uint16_t width, uint16_t color);
+void LCD_Draw_Rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color);
 
 
 
