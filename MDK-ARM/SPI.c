@@ -6,8 +6,8 @@
 //DC pin -> PE10
 
 extern SPI_HandleTypeDef hspi1;
-volatile uint16_t LCD_HEIGHT = 480;
-volatile uint16_t LCD_WIDTH	 = 320;
+static uint16_t LCD_HEIGHT = 320;
+static uint16_t LCD_WIDTH	 = 480;
 
 
 
@@ -157,4 +157,95 @@ void LCD_Draw_Rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
 	if((x+width-1) >= LCD_WIDTH) width = LCD_WIDTH-x;
 	LCD_Set_Address(x,y,x+width-1,y+height-1);
 	LCD_Draw_Color_Burst(color,width*height);
+}
+
+void LCD_Draw_Grid(void)
+{
+	LCD_Fill_Screen(BLACK);
+	for(int i=16;i<=480;i += 32)
+	{
+		LCD_Vertical_Line(i,0,480,LIGHTGREY);
+	}
+	for(int i=0;i<=320;i += 32)
+	{
+		LCD_Horizontal_Line(0,i,480,LIGHTGREY);
+	}
+	
+	LCD_Vertical_Line(240,0,320,GREEN);
+	LCD_Horizontal_Line(0,160,480,GREEN);
+	
+}
+
+//Draws char, x/y position, size = number of bytes(must be 1 or 2)
+void LCD_Draw_Char(uint16_t x, uint16_t y, uint16_t color, uint16_t number, uint16_t character, uint8_t size)
+{
+	if(size>2) return;
+	if(size==1)
+	{
+		LCD_Set_Address(x,y,x+5,y+8);
+		writecmd(0x2C);
+		for(int i=0;i<8;i++)
+		{
+			for(int j=2;j<8;j++)
+			{
+					if((chars8[character-0x20][6-i]>>(7-j))&0x01)
+					{
+						write8(color>>8);
+						write8(color);
+					}
+					else
+					{
+						write8(number>>8);
+						write8(number);
+					}
+				}
+			}
+		}
+	else
+	{
+		LCD_Set_Address(x,y,x+7,y+16);
+		writecmd(0x2C);
+		for(int i=0;i<16;i++)
+		{
+			for(int j=2;j<16;j++)
+			{
+					if((chars16[character-0x20][i]>>(7-j))&0x01)
+					{
+						write8(color>>8);
+						write8(color);
+					}
+					else
+					{
+						write8(number>>8);
+						write8(number);
+					}
+				}
+			}
+		}		
+}
+
+void LCD_Set_Rotation(uint8_t rotation){
+	writecmd(0x36);
+	switch(rotation){
+		case 0:
+						write8(0x48);
+						LCD_WIDTH = 320;
+						LCD_HEIGHT = 480;
+						break;
+		case 1: 
+						write8(0x28);
+						LCD_WIDTH = 480;
+						LCD_HEIGHT = 320;
+						break;
+		case 2:
+						write8(0x88);
+						LCD_WIDTH = 320;
+						LCD_HEIGHT = 480;
+						break;
+		case 3:
+						write8(0xE8);
+						LCD_WIDTH = 480;
+						LCD_HEIGHT = 320;
+						break;
+	}
 }

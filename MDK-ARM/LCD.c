@@ -3,8 +3,7 @@
 #include "LCD.h"
 #include "SPI.h"
 
-#define CS_LOW (HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_RESET)) //pull CS low
-#define CS_HIGH (HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_SET)) //pull CS high
+
 
 
 void LCD_Init(void){
@@ -36,6 +35,10 @@ void LCD_Init(void){
 	//16 bit color mode
 	writecmd(HX8357D_CMD_COLMOD);
 	write8(0x55);
+		
+	//writecmd(0x36);  //Memory access control
+	//write8(0x00);
+	
 	
 	//Sleep mode off
 	writecmd(HX8357D_CMD_SLPOUT);
@@ -45,4 +48,12 @@ void LCD_Init(void){
 	writecmd(HX8357D_CMD_DISPON);
 	HAL_Delay(50);
 	
+	//Change display orientation
+	writecmd(0x36);
+	write8(MADCTL_MV);
+	
 }
+
+
+
+

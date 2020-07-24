@@ -92,12 +92,15 @@ int main(void)
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 	HAL_SPI_MspInit(&hspi1);
-	LCD_Init();
-	LCD_Fill_Screen(PINK);
 
+	LCD_Init();
+	//LCD_Draw_Grid();
+	LCD_Fill_Screen(BLACK);
+	LCD_Set_Rotation(3);
+	LCD_Draw_Char(240,160,GREEN,BLACK,'F',1);
   /* USER CODE END 2 */
 
-  /* Infinite loop */
+  /* Infinite loop */ 
   /* USER CODE BEGIN WHILE */
   while (1)
   {
