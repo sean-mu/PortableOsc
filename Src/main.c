@@ -25,6 +25,9 @@
 /* USER CODE BEGIN Includes */
 #include "LCD.h"
 #include "SPI.h"
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -96,8 +99,12 @@ int main(void)
 	LCD_Init();
 	//LCD_Draw_Grid();
 	LCD_Fill_Screen(BLACK);
-	LCD_Set_Rotation(3);
-	LCD_Draw_Char(240,160,GREEN,BLACK,'F',1);
+	LCD_Set_Rotation(1);
+	uint16_t x = 2160;
+	char buf[6];
+	snprintf(buf,6,"%u",x);
+	//LCD_Draw_String(50, 50, GREEN, BLACK, "Hello World", 2);
+	LCD_Draw_String(100, 50, GREEN, BLACK, buf, 2);
   /* USER CODE END 2 */
 
   /* Infinite loop */ 

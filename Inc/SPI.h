@@ -59,8 +59,10 @@ void LCD_Vertical_Line(uint16_t x, uint16_t y, uint16_t height, uint16_t color);
 void LCD_Horizontal_Line(uint16_t x, uint16_t y, uint16_t width, uint16_t color);
 void LCD_Draw_Rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color);
 void LCD_Draw_Grid(void);
-void LCD_Draw_Char(uint16_t x, uint16_t y, uint16_t color, uint16_t number, uint16_t character, uint8_t size);
+void LCD_Draw_Char(uint16_t x, uint16_t y, uint16_t color, uint16_t backColor, uint16_t character, uint8_t size);
 void LCD_Set_Rotation(uint8_t rotation);
+void LCD_Draw_String(uint16_t x, uint16_t y, uint16_t color, uint16_t backColor, unsigned char *str, uint8_t size);
+
 
 static unsigned char const chars8[][8] = {
 	//SPACE

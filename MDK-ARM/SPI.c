@@ -1,6 +1,9 @@
 #include "stm32l4xx_hal.h"
 #include "stm32l4xx_hal_spi.h"
 #include "SPI.h"
+#include <stdlib.h>
+#include <math.h>
+
 
 //CS pin -> PE11
 //DC pin -> PE10
@@ -176,8 +179,8 @@ void LCD_Draw_Grid(void)
 	
 }
 
-//Draws char, x/y position, size = number of bytes(must be 1 or 2)
-void LCD_Draw_Char(uint16_t x, uint16_t y, uint16_t color, uint16_t number, uint16_t character, uint8_t size)
+//Draws char. x/y -> position, size must be 1(small) or 2(large).  color = text color, backColor = background color
+void LCD_Draw_Char(uint16_t x, uint16_t y, uint16_t color, uint16_t backColor, uint16_t character, uint8_t size)
 {
 	if(size>2) return;
 	if(size==1)
@@ -188,6 +191,7 @@ void LCD_Draw_Char(uint16_t x, uint16_t y, uint16_t color, uint16_t number, uint
 		{
 			for(int j=2;j<8;j++)
 			{
+					//fills in pixels corresponding to color bitmap in char8
 					if((chars8[character-0x20][6-i]>>(7-j))&0x01)
 					{
 						write8(color>>8);
@@ -195,8 +199,8 @@ void LCD_Draw_Char(uint16_t x, uint16_t y, uint16_t color, uint16_t number, uint
 					}
 					else
 					{
-						write8(number>>8);
-						write8(number);
+						write8(backColor>>8);
+						write8(backColor);
 					}
 				}
 			}
@@ -207,17 +211,18 @@ void LCD_Draw_Char(uint16_t x, uint16_t y, uint16_t color, uint16_t number, uint
 		writecmd(0x2C);
 		for(int i=0;i<16;i++)
 		{
-			for(int j=2;j<16;j++)
+			for(int j=0;j<8;j++)
 			{
-					if((chars16[character-0x20][i]>>(7-j))&0x01)
+					if((chars16[character-0x20][16-i]>>(7-j))&0x01)
 					{
 						write8(color>>8);
 						write8(color);
 					}
+					
 					else
 					{
-						write8(number>>8);
-						write8(number);
+						write8(backColor>>8);
+						write8(backColor);
 					}
 				}
 			}
@@ -249,3 +254,40 @@ void LCD_Set_Rotation(uint8_t rotation){
 						break;
 	}
 }
+
+
+void LCD_Draw_String(uint16_t x, uint16_t y, uint16_t color, uint16_t backColor, unsigned char *str, uint8_t size)
+{
+	
+	uint8_t k = 1;
+	switch (size)
+	{
+	case 1:
+		while (*str)
+		{
+			if ((x+(size*8))>LCD_WIDTH)
+			{
+				x = 1;
+				y = y + (size*8);
+			}
+			LCD_Draw_Char(x, y, color, backColor, *str, size);
+			x += size*8-2;
+			*str++;
+		}
+	break;
+	case 2:
+		while (*str)
+		{
+			if ((x+(size*8))>LCD_WIDTH)
+			{
+				x = 1;
+				y = y + (size*8);
+			}
+			LCD_Draw_Char(x,y,color,backColor,*str,size);
+			x += k*8;
+			*str++;
+		}
+	break;
+	}
+}
+
