@@ -36,9 +36,14 @@ void LCD_Init(void){
 	writecmd(HX8357D_CMD_COLMOD);
 	write8(0x55);
 		
-	//writecmd(0x36);  //Memory access control
-	//write8(0x00);
+	writecmd(0x36);  //Memory access control
+	write8(0x00);
+  writecmd(0x35);
+	write8(0x00);
 	
+	writecmd(0x44);
+	write8(0x00);
+	write8(0x02);
 	
 	//Sleep mode off
 	writecmd(HX8357D_CMD_SLPOUT);
@@ -48,9 +53,11 @@ void LCD_Init(void){
 	writecmd(HX8357D_CMD_DISPON);
 	HAL_Delay(50);
 	
+
+	
 	//Change display orientation
-	writecmd(0x36);
-	write8(MADCTL_MV);
+	//writecmd(0x36);
+	//write8(MADCTL_MV);
 	
 }
 

@@ -62,7 +62,9 @@ void LCD_Draw_Grid(void);
 void LCD_Draw_Char(uint16_t x, uint16_t y, uint16_t color, uint16_t backColor, uint16_t character, uint8_t size);
 void LCD_Set_Rotation(uint8_t rotation);
 void LCD_Draw_String(uint16_t x, uint16_t y, uint16_t color, uint16_t backColor, unsigned char *str, uint8_t size);
-
+void LCD_Line(uint16_t color, int16_t x1, int16_t x2, int16_t y1, int16_t y2);
+void LCD_Point(uint16_t x, uint16_t y, uint16_t color);
+void swapInt(int16_t *x, int16_t *y);
 
 static unsigned char const chars8[][8] = {
 	//SPACE

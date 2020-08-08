@@ -2,6 +2,7 @@
 #include "stm32l4xx_hal_spi.h"
 #include "SPI.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 
@@ -164,7 +165,7 @@ void LCD_Draw_Rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
 
 void LCD_Draw_Grid(void)
 {
-	LCD_Fill_Screen(BLACK);
+	//LCD_Fill_Screen(BLACK);
 	for(int i=16;i<=480;i += 32)
 	{
 		LCD_Vertical_Line(i,0,480,LIGHTGREY);
@@ -290,4 +291,64 @@ void LCD_Draw_String(uint16_t x, uint16_t y, uint16_t color, uint16_t backColor,
 	break;
 	}
 }
+
+void swapInt(int16_t *x, int16_t *y)
+{
+	int16_t temp = *x;
+	*x = *y;
+	*y = temp;
+}
+
+void LCD_Point(uint16_t x, uint16_t y, uint16_t color)
+{
+	//error checking to make sure x and y are in bounds
+	if((x>=LCD_WIDTH)||(y>=LCD_HEIGHT)) return;
+	LCD_Set_Address(x,y,LCD_WIDTH-1,LCD_HEIGHT-1);
+	writecmd(0x2C);
+	write8(color>>8);
+	write8(color);
+}
+
+
+//uses Bresenham's algorithm
+/*void LCD_Line(uint16_t color, int16_t x1, int16_t x2, int16_t y1, int16_t y2)
+{
+		//s=1 if rise>run, otherwise 0
+		int s = abs(y2-y1)>abs(x2-x1);
+	
+		//Set up points so dx(change in x) always positive, will draw on TFT left to right
+		if(s)
+		{
+			swapInt(&x1,&y1);
+			swapInt(&x2,&y2);
+		}
+		if(x1>x2)
+		{
+			swapInt(&x1,&x2);
+			swapInt(&y1,&y2);
+		}
+		//Variables for change in x,y, and yStep will be used to hold positive or negative slope
+		int16_t dx,dy;
+		int16_t yStep;
+		dx = (x2-x1);
+		int16_t e = dx/2;
+		dy = abs(y2-y1);
+		
+		if(y1<y2) yStep = 1;
+		else yStep = -1;
+		
+		for(;x1<=x2;x1++)
+		{
+			if(s) LCD_Point(y1,x1,color);
+			else LCD_Point(x1,y1,color);
+			e -=dy;
+			if(e<0)
+			{
+				y1 += yStep;
+				e = dx;
+			}
+		}
+}*/
+
+
 
