@@ -311,7 +311,7 @@ void LCD_Point(uint16_t x, uint16_t y, uint16_t color)
 
 
 //uses Bresenham's algorithm
-/*void LCD_Line(uint16_t color, int16_t x1, int16_t x2, int16_t y1, int16_t y2)
+void LCD_Line(uint16_t color, int16_t x1, int16_t x2, int16_t y1, int16_t y2)
 {
 		//s=1 if rise>run, otherwise 0
 		int s = abs(y2-y1)>abs(x2-x1);
@@ -348,7 +348,7 @@ void LCD_Point(uint16_t x, uint16_t y, uint16_t color)
 				e = dx;
 			}
 		}
-}*/
+}
 
 
 

@@ -64,7 +64,7 @@ static void MX_ADC1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+static uint16_t sample[480];
 /* USER CODE END 0 */
 
 /**
@@ -110,16 +110,29 @@ int main(void)
 	LCD_Fill_Screen(BLACK);
 	LCD_Draw_Grid();
 	uint16_t ADCConvValue = 0;
-	
+	int dTime = 10;
+	//int ADCY = 0;
 	for(uint16_t x = 0;x<480;x++)
 	{
-		if(HAL_ADC_PollForConversion(&hadc1,1000) == HAL_OK) ADCConvValue = HAL_ADC_GetValue(&hadc1);
-		LCD_Point(x,ADCConvValue/26,YELLOW);
+		
+		
+		if (HAL_ADC_PollForConversion(&hadc1, 10000) == HAL_OK)
+    {
+       sample[x] = HAL_ADC_GetValue(&hadc1)*320/4096;
+    }
+		HAL_Delay(dTime);
+		//ADCConvValue=ADC1->DR;
+		//LCD_Point(x,ADCConvValue,YELLOW);
 		//if(x<320) LCD_Point(x,x,YELLOW);
 		//else LCD_Point(x,x-320,YELLOW);
 	}
 	
-
+	for(uint16_t x=0;x<479;x++)
+	{
+		LCD_Line(YELLOW,x,x+1,sample[x],sample[x+1]);
+	}
+	
+	
 	//LCD_Set_Rotation(1);
 	//LCD_Fill_Screen(BLACK);
 	//LCD_Draw_Grid();
@@ -220,7 +233,7 @@ static void MX_ADC1_Init(void)
   /** Common config 
   */
   hadc1.Instance = ADC1;
-  hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
+  hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV8;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
@@ -248,7 +261,7 @@ static void MX_ADC1_Init(void)
   }
   /** Configure Regular Channel 
   */
-  sConfig.Channel = ADC_CHANNEL_1;
+  sConfig.Channel = ADC_CHANNEL_6;
   sConfig.Rank = ADC_REGULAR_RANK_1;
   sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
@@ -315,7 +328,7 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
-  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOE_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
