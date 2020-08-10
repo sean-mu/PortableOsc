@@ -1244,21 +1244,21 @@ Image Symbol Table
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry2.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
-    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  mallocra.o ABSOLUTE
-    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  malloc.o ABSOLUTE
-    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  mallocr.o ABSOLUTE
     ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  malloca.o ABSOLUTE
+    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  mallocr.o ABSOLUTE
+    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  malloc.o ABSOLUTE
+    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  mallocra.o ABSOLUTE
     ../clib/microlib/malloc/mvars.c          0x00000000   Number         0  mvars.o ABSOLUTE
-    ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpya.o ABSOLUTE
     ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpyb.o ABSOLUTE
+    ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpya.o ABSOLUTE
     ../clib/microlib/string/memset.c         0x00000000   Number         0  memseta.o ABSOLUTE
     ..\Drivers\STM32L4xx_HAL_Driver\Src\stm32l4xx_hal.c 0x00000000   Number         0  stm32l4xx_hal.o ABSOLUTE
     ..\Drivers\STM32L4xx_HAL_Driver\Src\stm32l4xx_hal_adc.c 0x00000000   Number         0  stm32l4xx_hal_adc.o ABSOLUTE
@@ -1400,10 +1400,10 @@ Image Symbol Table
     i.__scatterload_zeroinit                 0x08002822   Section       14  handlers.o(i.__scatterload_zeroinit)
     i.free                                   0x08002830   Section        0  malloc.o(i.free)
     i.main                                   0x08002880   Section        0  main.o(i.main)
-    i.malloc                                 0x08002930   Section        0  malloc.o(i.malloc)
-    i.write8                                 0x0800299c   Section        0  spi.o(i.write8)
-    i.writecmd                               0x080029d4   Section        0  spi.o(i.writecmd)
-    .constdata                               0x08002a0c   Section       64  system_stm32l4xx.o(.constdata)
+    i.malloc                                 0x08002974   Section        0  malloc.o(i.malloc)
+    i.write8                                 0x080029e0   Section        0  spi.o(i.write8)
+    i.writecmd                               0x08002a18   Section        0  spi.o(i.writecmd)
+    .constdata                               0x08002a50   Section       64  system_stm32l4xx.o(.constdata)
     .data                                    0x20000000   Section        4  spi.o(.data)
     LCD_HEIGHT                               0x20000000   Data           2  spi.o(.data)
     LCD_WIDTH                                0x20000002   Data           2  spi.o(.data)
@@ -1411,10 +1411,11 @@ Image Symbol Table
     .data                                    0x20000010   Section        4  system_stm32l4xx.o(.data)
     .data                                    0x20000014   Section        4  mvars.o(.data)
     .data                                    0x20000018   Section        4  mvars.o(.data)
-    .bss                                     0x2000001c   Section     1160  main.o(.bss)
+    .bss                                     0x2000001c   Section     2120  main.o(.bss)
     sample                                   0x200000e4   Data         960  main.o(.bss)
-    HEAP                                     0x200004a8   Section      512  startup_stm32l476xx.o(HEAP)
-    STACK                                    0x200006a8   Section     1024  startup_stm32l476xx.o(STACK)
+    lastSample                               0x200004a4   Data         960  main.o(.bss)
+    HEAP                                     0x20000868   Section      512  startup_stm32l476xx.o(HEAP)
+    STACK                                    0x20000a68   Section     1024  startup_stm32l476xx.o(STACK)
 
     Global Symbols
 
@@ -1587,14 +1588,14 @@ Image Symbol Table
     __scatterload_null                       0x08002821   Thumb Code     2  handlers.o(i.__scatterload_null)
     __scatterload_zeroinit                   0x08002823   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
     free                                     0x08002831   Thumb Code    76  malloc.o(i.free)
-    main                                     0x08002881   Thumb Code   170  main.o(i.main)
-    malloc                                   0x08002931   Thumb Code    92  malloc.o(i.malloc)
-    write8                                   0x0800299d   Thumb Code    50  spi.o(i.write8)
-    writecmd                                 0x080029d5   Thumb Code    50  spi.o(i.writecmd)
-    AHBPrescTable                            0x08002a0c   Data          16  system_stm32l4xx.o(.constdata)
-    MSIRangeTable                            0x08002a1c   Data          48  system_stm32l4xx.o(.constdata)
-    Region$$Table$$Base                      0x08002a4c   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08002a6c   Number         0  anon$$obj.o(Region$$Table)
+    main                                     0x08002881   Thumb Code   234  main.o(i.main)
+    malloc                                   0x08002975   Thumb Code    92  malloc.o(i.malloc)
+    write8                                   0x080029e1   Thumb Code    50  spi.o(i.write8)
+    writecmd                                 0x08002a19   Thumb Code    50  spi.o(i.writecmd)
+    AHBPrescTable                            0x08002a50   Data          16  system_stm32l4xx.o(.constdata)
+    MSIRangeTable                            0x08002a60   Data          48  system_stm32l4xx.o(.constdata)
+    Region$$Table$$Base                      0x08002a90   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08002ab0   Number         0  anon$$obj.o(Region$$Table)
     uwTickPrio                               0x20000004   Data           4  stm32l4xx_hal.o(.data)
     uwTickFreq                               0x20000008   Data           4  stm32l4xx_hal.o(.data)
     uwTick                                   0x2000000c   Data           4  stm32l4xx_hal.o(.data)
@@ -1603,9 +1604,9 @@ Image Symbol Table
     __microlib_freelist_initialised          0x20000018   Data           4  mvars.o(.data)
     hadc1                                    0x2000001c   Data         100  main.o(.bss)
     hspi1                                    0x20000080   Data         100  main.o(.bss)
-    __heap_base                              0x200004a8   Data           0  startup_stm32l476xx.o(HEAP)
-    __heap_limit                             0x200006a8   Data           0  startup_stm32l476xx.o(HEAP)
-    __initial_sp                             0x20000aa8   Data           0  startup_stm32l476xx.o(STACK)
+    __heap_base                              0x20000868   Data           0  startup_stm32l476xx.o(HEAP)
+    __heap_limit                             0x20000a68   Data           0  startup_stm32l476xx.o(HEAP)
+    __initial_sp                             0x20000e68   Data           0  startup_stm32l476xx.o(STACK)
 
 
 
@@ -1615,9 +1616,9 @@ Memory Map of the image
 
   Image Entry point : 0x08000189
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00002a88, Max: 0x00100000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00002acc, Max: 0x00100000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00002a6c, Max: 0x00100000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00002ab0, Max: 0x00100000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -1714,32 +1715,32 @@ Memory Map of the image
     0x08002820   0x08002820   0x00000002   Code   RO         3364    i.__scatterload_null  mc_w.l(handlers.o)
     0x08002822   0x08002822   0x0000000e   Code   RO         3365    i.__scatterload_zeroinit  mc_w.l(handlers.o)
     0x08002830   0x08002830   0x00000050   Code   RO         3311    i.free              mc_w.l(malloc.o)
-    0x08002880   0x08002880   0x000000b0   Code   RO          307    i.main              main.o
-    0x08002930   0x08002930   0x0000006c   Code   RO         3312    i.malloc            mc_w.l(malloc.o)
-    0x0800299c   0x0800299c   0x00000038   Code   RO           31    i.write8            spi.o
-    0x080029d4   0x080029d4   0x00000038   Code   RO           32    i.writecmd          spi.o
-    0x08002a0c   0x08002a0c   0x00000040   Data   RO         3273    .constdata          system_stm32l4xx.o
-    0x08002a4c   0x08002a4c   0x00000020   Data   RO         3361    Region$$Table       anon$$obj.o
+    0x08002880   0x08002880   0x000000f4   Code   RO          307    i.main              main.o
+    0x08002974   0x08002974   0x0000006c   Code   RO         3312    i.malloc            mc_w.l(malloc.o)
+    0x080029e0   0x080029e0   0x00000038   Code   RO           31    i.write8            spi.o
+    0x08002a18   0x08002a18   0x00000038   Code   RO           32    i.writecmd          spi.o
+    0x08002a50   0x08002a50   0x00000040   Data   RO         3273    .constdata          system_stm32l4xx.o
+    0x08002a90   0x08002a90   0x00000020   Data   RO         3361    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM2 (Exec base: 0x10000000, Load base: 0x08002a88, Size: 0x00000000, Max: 0x00008000, ABSOLUTE)
+    Execution Region RW_IRAM2 (Exec base: 0x10000000, Load base: 0x08002acc, Size: 0x00000000, Max: 0x00008000, ABSOLUTE)
 
     **** No section assigned to this execution region ****
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08002a6c, Size: 0x00000aa8, Max: 0x00018000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08002ab0, Size: 0x00000e68, Max: 0x00018000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08002a6c   0x00000004   Data   RW           34    .data               spi.o
-    0x20000004   0x08002a70   0x0000000c   Data   RW          957    .data               stm32l4xx_hal.o
-    0x20000010   0x08002a7c   0x00000004   Data   RW         3275    .data               system_stm32l4xx.o
-    0x20000014   0x08002a80   0x00000004   Data   RW         3357    .data               mc_w.l(mvars.o)
-    0x20000018   0x08002a84   0x00000004   Data   RW         3358    .data               mc_w.l(mvars.o)
-    0x2000001c        -       0x00000488   Zero   RW          308    .bss                main.o
-    0x200004a4   0x08002a88   0x00000004   PAD
-    0x200004a8        -       0x00000200   Zero   RW            2    HEAP                startup_stm32l476xx.o
-    0x200006a8        -       0x00000400   Zero   RW            1    STACK               startup_stm32l476xx.o
+    0x20000000   0x08002ab0   0x00000004   Data   RW           34    .data               spi.o
+    0x20000004   0x08002ab4   0x0000000c   Data   RW          957    .data               stm32l4xx_hal.o
+    0x20000010   0x08002ac0   0x00000004   Data   RW         3275    .data               system_stm32l4xx.o
+    0x20000014   0x08002ac4   0x00000004   Data   RW         3357    .data               mc_w.l(mvars.o)
+    0x20000018   0x08002ac8   0x00000004   Data   RW         3358    .data               mc_w.l(mvars.o)
+    0x2000001c        -       0x00000848   Zero   RW          308    .bss                main.o
+    0x20000864   0x08002acc   0x00000004   PAD
+    0x20000868        -       0x00000200   Zero   RW            2    HEAP                startup_stm32l476xx.o
+    0x20000a68        -       0x00000400   Zero   RW            1    STACK               startup_stm32l476xx.o
 
 
 ==============================================================================
@@ -1750,7 +1751,7 @@ Image component sizes
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
        172          0          0          0          0        575   lcd.o
-       642         42          0          0       1160       3934   main.o
+       710         46          0          0       2120       4046   main.o
       1030         70          0          4          0     827920   spi.o
         36          8        392          0       1536        848   startup_stm32l476xx.o
        176         28          0         12          0       4373   stm32l4xx_hal.o
@@ -1767,7 +1768,7 @@ Image component sizes
         68         12         64          4          0       1241   system_stm32l4xx.o
 
     ----------------------------------------------------------------------
-     10062        520        488         20       2700    1027981   Object Totals
+     10130        524        488         20       3660    1028093   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         12          0          0          0          4          0   (incl. Padding)
 
@@ -1809,15 +1810,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     10372        556        488         28       2700    1021817   Grand Totals
-     10372        556        488         28       2700    1021817   ELF Image Totals
-     10372        556        488         28          0          0   ROM Totals
+     10440        560        488         28       3660    1021929   Grand Totals
+     10440        560        488         28       3660    1021929   ELF Image Totals
+     10440        560        488         28          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                10860 (  10.61kB)
-    Total RW  Size (RW Data + ZI Data)              2728 (   2.66kB)
-    Total ROM Size (Code + RO Data + RW Data)      10888 (  10.63kB)
+    Total RO  Size (Code + RO Data)                10928 (  10.67kB)
+    Total RW  Size (RW Data + ZI Data)              3688 (   3.60kB)
+    Total ROM Size (Code + RO Data + RW Data)      10956 (  10.70kB)
 
 ==============================================================================
 

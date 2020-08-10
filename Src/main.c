@@ -65,6 +65,7 @@ static void MX_ADC1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 static uint16_t sample[480];
+static uint16_t lastSample[480];
 /* USER CODE END 0 */
 
 /**
@@ -100,6 +101,9 @@ int main(void)
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 	//Delay to give time for LCD to power on before initializing
+	//char buf[6];
+	//snprintf(buf,6,"%u",x)
+	//LCD_Draw_String(100,50,GREEN,BLACK,buf,2)
 	HAL_Delay(1000);
 	HAL_SPI_MspInit(&hspi1);
 	HAL_ADC_Start(&hadc1);
@@ -109,22 +113,19 @@ int main(void)
 	
 	LCD_Fill_Screen(BLACK);
 	LCD_Draw_Grid();
-	uint16_t ADCConvValue = 0;
-	int dTime = 10;
+	//uint16_t ADCConvValue = 0;
+	int dTime = 1;
+	uint16_t trigger = 0;
+	uint16_t input = 160;
+	
 	//int ADCY = 0;
-	for(uint16_t x = 0;x<480;x++)
+	/*for(uint16_t x = 0;x<480;x++)
 	{
-		
-		
-		if (HAL_ADC_PollForConversion(&hadc1, 10000) == HAL_OK)
+		if (HAL_ADC_PollForConversion(&hadc1, 100000) == HAL_OK)
     {
        sample[x] = HAL_ADC_GetValue(&hadc1)*320/4096;
     }
 		HAL_Delay(dTime);
-		//ADCConvValue=ADC1->DR;
-		//LCD_Point(x,ADCConvValue,YELLOW);
-		//if(x<320) LCD_Point(x,x,YELLOW);
-		//else LCD_Point(x,x-320,YELLOW);
 	}
 	
 	for(uint16_t x=0;x<479;x++)
@@ -133,6 +134,19 @@ int main(void)
 	}
 	
 	
+	HAL_Delay(5000);
+	
+	
+	for(uint16_t x=0;x<479;x++)
+	{
+		LCD_Line(BLACK,x,x+1,sample[x],sample[x+1]);
+	}
+	LCD_Draw_Grid();
+	
+	for(uint16_t x=0;x<479;x++)
+	{
+		LCD_Line(YELLOW,x,x+1,sample[x],sample[x+1]);
+	}*/
 	//LCD_Set_Rotation(1);
 	//LCD_Fill_Screen(BLACK);
 	//LCD_Draw_Grid();
@@ -144,6 +158,50 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		//handle triggering
+		while(input < trigger)
+		{
+			if (HAL_ADC_PollForConversion(&hadc1, 1) == HAL_OK)
+			{
+				 input = HAL_ADC_GetValue(&hadc1)*320/4096;
+			}
+		}
+		
+		//fill sample block
+		for(uint16_t x = 0;x<480;x++)
+		{
+			if (HAL_ADC_PollForConversion(&hadc1, 100000) == HAL_OK)
+			{
+				 sample[x] = HAL_ADC_GetValue(&hadc1)*320/4096;
+			}
+			//HAL_Delay(dTime);
+		}
+		
+		//erase last set of samples
+		//for(uint16_t x=0;x<479;x++)
+		//{
+			//LCD_Line(BLACK,x,x+1,lastSample[x],lastSample[x+1]);
+		//}
+		
+		//redraw grid
+		//LCD_Draw_Grid();
+		
+		//draw new samples on tft
+		for(uint16_t x=0;x<479;x++)
+		{
+			LCD_Line(BLACK,x,x+1,lastSample[x],lastSample[x+1]);
+			LCD_Line(YELLOW,x,x+1,sample[x],sample[x+1]);
+		}
+		//redraw grid
+		LCD_Draw_Grid();
+
+		for(uint16_t x = 0;x<480;x++)
+		{
+			lastSample[x] = sample[x];
+		}	
+	
+		input = 0;
+	
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

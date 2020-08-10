@@ -176,7 +176,7 @@ void LCD_Draw_Grid(void)
 	}
 	
 	LCD_Vertical_Line(240,0,320,GREEN);
-	LCD_Horizontal_Line(0,160,480,GREEN);
+	LCD_Horizontal_Line(0,0,480,GREEN);
 	
 }
 
