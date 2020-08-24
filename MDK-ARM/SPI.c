@@ -28,6 +28,13 @@ void write8(uint8_t value){
 	HAL_GPIO_WritePin(LCD_CS_PORT, LCD_CS_PIN, GPIO_PIN_SET);
 }
 
+void setGain(uint8_t gain){
+	HAL_GPIO_WritePin(PGA_CS_PORT, PGA_CS_PIN, GPIO_PIN_RESET);
+	SPI_Send(PGA_WRITE);
+	SPI_Send(gain);
+	HAL_GPIO_WritePin(PGA_CS_PORT, PGA_CS_PIN, GPIO_PIN_SET);
+}
+
 
 
 void writecmd(uint8_t cmd)
@@ -42,7 +49,7 @@ void SPI_Init(void)
 {
 	HAL_GPIO_WritePin(LCD_CS_PORT, LCD_CS_PIN, GPIO_PIN_RESET);
 }
-
+/*
 void LCD_Reset(void)
 {
 	HAL_GPIO_WritePin(LCD_RST_PORT, LCD_RST_PIN, GPIO_PIN_RESET);
@@ -349,6 +356,6 @@ void LCD_Line(uint16_t color, int16_t x1, int16_t x2, int16_t y1, int16_t y2)
 			}
 		}
 }
-
+*/
 
 

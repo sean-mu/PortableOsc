@@ -66,6 +66,9 @@ static void MX_ADC1_Init(void);
 /* USER CODE BEGIN 0 */
 static uint16_t sample[480];
 static uint16_t lastSample[480];
+//int j;
+//int k;
+//int trigger;
 /* USER CODE END 0 */
 
 /**
@@ -114,7 +117,7 @@ int main(void)
 	LCD_Fill_Screen(BLACK);
 	LCD_Draw_Grid();
 	//uint16_t ADCConvValue = 0;
-	int dTime = 1;
+	//int dTime = 1;
 	uint16_t trigger = 0;
 	uint16_t input = 160;
 	
@@ -168,7 +171,8 @@ int main(void)
 		}
 		
 		//fill sample block
-		for(uint16_t x = 0;x<480;x++)
+		
+		for(uint16_t x = 0;x<479;x++)
 		{
 			if (HAL_ADC_PollForConversion(&hadc1, 100000) == HAL_OK)
 			{
@@ -177,25 +181,18 @@ int main(void)
 			//HAL_Delay(dTime);
 		}
 		
-		//erase last set of samples
-		//for(uint16_t x=0;x<479;x++)
-		//{
-			//LCD_Line(BLACK,x,x+1,lastSample[x],lastSample[x+1]);
-		//}
-		
-		//redraw grid
-		//LCD_Draw_Grid();
-		
 		//draw new samples on tft
-		for(uint16_t x=0;x<479;x++)
+
+		for(int x =0;x<479;x++)
 		{
-			LCD_Line(BLACK,x,x+1,lastSample[x],lastSample[x+1]);
-			LCD_Line(YELLOW,x,x+1,sample[x],sample[x+1]);
+				LCD_Line(BLACK,x,x+1,lastSample[x],lastSample[x+1]);
+				LCD_Line(YELLOW,x,x+1,sample[x],sample[x+1]);
 		}
 		//redraw grid
 		LCD_Draw_Grid();
+		LCD_Display_Measurements(sample);
 
-		for(uint16_t x = 0;x<480;x++)
+		for(uint16_t x = 0;x<1000;x++)
 		{
 			lastSample[x] = sample[x];
 		}	

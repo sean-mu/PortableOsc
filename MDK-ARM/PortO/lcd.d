@@ -36,3 +36,6 @@ porto\lcd.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h
 porto\lcd.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h
 porto\lcd.o: ../Inc/LCD.h
 porto\lcd.o: ../Inc/SPI.h
+porto\lcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+porto\lcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+porto\lcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
