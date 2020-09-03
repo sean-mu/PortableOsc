@@ -25,8 +25,6 @@ porto\stm32l4xx_hal_opamp.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_c
 porto\stm32l4xx_hal_opamp.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_adc.h
 porto\stm32l4xx_hal_opamp.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_adc.h
 porto\stm32l4xx_hal_opamp.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_adc_ex.h
-porto\stm32l4xx_hal_opamp.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dac.h
-porto\stm32l4xx_hal_opamp.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dac_ex.h
 porto\stm32l4xx_hal_opamp.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_flash.h
 porto\stm32l4xx_hal_opamp.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_flash_ex.h
 porto\stm32l4xx_hal_opamp.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_flash_ramfunc.h

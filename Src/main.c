@@ -47,6 +47,8 @@
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
 
+OPAMP_HandleTypeDef hopamp1;
+
 SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
@@ -58,6 +60,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_ADC1_Init(void);
+static void MX_OPAMP1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -102,12 +105,16 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI1_Init();
   MX_ADC1_Init();
+  MX_OPAMP1_Init();
   /* USER CODE BEGIN 2 */
 	//Delay to give time for LCD to power on before initializing
 	//char buf[6];
 	//snprintf(buf,6,"%u",x)
 	//LCD_Draw_String(100,50,GREEN,BLACK,buf,2)
 	HAL_Delay(1000);
+	HAL_OPAMP_MspInit(&hopamp1);
+	HAL_OPAMP_SelfCalibrate(&hopamp1);
+	HAL_OPAMP_Start(&hopamp1);
 	HAL_SPI_MspInit(&hspi1);
 	HAL_ADC_Start(&hadc1);
 
@@ -162,13 +169,13 @@ int main(void)
   while (1)
   {
 		//handle triggering
-		while(input < trigger)
-		{
-			if (HAL_ADC_PollForConversion(&hadc1, 1) == HAL_OK)
-			{
-				 input = HAL_ADC_GetValue(&hadc1)*320/4096;
-			}
-		}
+		//while(input < trigger)
+		//{
+			//if (HAL_ADC_PollForConversion(&hadc1, 1) == HAL_OK)
+		//	{
+			//	 input = HAL_ADC_GetValue(&hadc1)*3200/4096;
+			//}
+		//}
 		
 		//fill sample block
 		
@@ -176,14 +183,14 @@ int main(void)
 		{
 			if (HAL_ADC_PollForConversion(&hadc1, 100000) == HAL_OK)
 			{
-				 sample[x] = HAL_ADC_GetValue(&hadc1)*320/4096;
+				 sample[x] = HAL_ADC_GetValue(&hadc1)*2909/4096;
 			}
 			//HAL_Delay(dTime);
 		}
 		
 		//draw new samples on tft
 
-		for(int x =0;x<479;x++)
+		for(int x =0;x<478;x++)
 		{
 				LCD_Line(BLACK,x,x+1,lastSample[x],lastSample[x+1]);
 				LCD_Line(YELLOW,x,x+1,sample[x],sample[x+1]);
@@ -288,7 +295,7 @@ static void MX_ADC1_Init(void)
   /** Common config 
   */
   hadc1.Instance = ADC1;
-  hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV8;
+  hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV256;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
@@ -333,6 +340,39 @@ static void MX_ADC1_Init(void)
 }
 
 /**
+  * @brief OPAMP1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_OPAMP1_Init(void)
+{
+
+  /* USER CODE BEGIN OPAMP1_Init 0 */
+
+  /* USER CODE END OPAMP1_Init 0 */
+
+  /* USER CODE BEGIN OPAMP1_Init 1 */
+
+  /* USER CODE END OPAMP1_Init 1 */
+  hopamp1.Instance = OPAMP1;
+  hopamp1.Init.PowerSupplyRange = OPAMP_POWERSUPPLY_HIGH;
+  hopamp1.Init.Mode = OPAMP_PGA_MODE;
+  hopamp1.Init.NonInvertingInput = OPAMP_NONINVERTINGINPUT_IO0;
+  hopamp1.Init.InvertingInput = OPAMP_INVERTINGINPUT_CONNECT_NO;
+  hopamp1.Init.PgaGain = OPAMP_PGA_GAIN_2;
+  hopamp1.Init.PowerMode = OPAMP_POWERMODE_NORMAL;
+  hopamp1.Init.UserTrimming = OPAMP_TRIMMING_FACTORY;
+  if (HAL_OPAMP_Init(&hopamp1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN OPAMP1_Init 2 */
+
+  /* USER CODE END OPAMP1_Init 2 */
+
+}
+
+/**
   * @brief SPI1 Initialization Function
   * @param None
   * @retval None
@@ -355,7 +395,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;

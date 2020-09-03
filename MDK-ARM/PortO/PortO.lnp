@@ -22,6 +22,8 @@
 "porto\stm32l4xx_hal_pwr_ex.o"
 "porto\stm32l4xx_hal_cortex.o"
 "porto\stm32l4xx_hal_exti.o"
+"porto\stm32l4xx_hal_opamp.o"
+"porto\stm32l4xx_hal_opamp_ex.o"
 "porto\stm32l4xx_hal_spi.o"
 "porto\stm32l4xx_hal_spi_ex.o"
 "porto\stm32l4xx_hal_tim.o"
