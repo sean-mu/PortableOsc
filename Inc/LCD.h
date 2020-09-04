@@ -12,13 +12,13 @@
 #define HX8357D_CMD_SETPANEL    0xCC
 #define HX8357D_MADCTL  				0x36
 
-#define MADCTL_MY 0x80  ///< Bottom to top
-#define MADCTL_MX 0x40  ///< Right to left
-#define MADCTL_MV 0x20  ///< Reverse Mode
-#define MADCTL_ML 0x10  ///< LCD refresh Bottom to top
-#define MADCTL_RGB 0x00 ///< Red-Green-Blue pixel order
-#define MADCTL_BGR 0x08 ///< Blue-Green-Red pixel order
-#define MADCTL_MH 0x04  ///< LCD refresh right to left
+#define MADCTL_MY 0x80  //Bottom to top
+#define MADCTL_MX 0x40  //Right to left
+#define MADCTL_MV 0x20  //Reverse Mode
+#define MADCTL_ML 0x10  //LCD refresh Bottom to top
+#define MADCTL_RGB 0x00 //Red-Green-Blue pixel order
+#define MADCTL_BGR 0x08 //Blue-Green-Red pixel order
+#define MADCTL_MH 0x04  //LCD refresh right to left
 
 //CHIP SELECT PIN AND PORT, STANDARD GPIO
 #define LCD_CS_PORT								GPIOE
@@ -72,7 +72,7 @@ void LCD_Draw_String(uint16_t x, uint16_t y, uint16_t color, uint16_t backColor,
 void LCD_Line(uint16_t color, int16_t x1, int16_t x2, int16_t y1, int16_t y2);
 void LCD_Point(uint16_t x, uint16_t y, uint16_t color);
 void swapInt(int16_t *x, int16_t *y);
-void LCD_Display_Measurements(uint16_t sample[]);
+void LCD_Display_Measurements(uint16_t sample[],int atten);
 
 static unsigned char const chars8[][8] = {
 	//SPACE

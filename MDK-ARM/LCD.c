@@ -11,14 +11,23 @@ extern SPI_HandleTypeDef hspi1;
 static uint16_t LCD_HEIGHT = 320;
 static uint16_t LCD_WIDTH	 = 480;
 
-void LCD_Display_Measurements(uint16_t sample[])
+void LCD_Display_Measurements(uint16_t sample[],int atten)
 {
-	uint16_t max=0;
-	uint16_t min=320;
+	LCD_Fill_Screen(BLACK);
+	float max=0;
+	float min=320;
 	float volt=0.0;
 	
+	if(atten==1)
+	{
+		for(int x=0;x<478;x++)
+		{
+			sample[x]=sample[x]/5;
+		}
+	}
+	
 	//calc max/min sample values
-	for(int x=0;x<480;x++)
+	for(int x=0;x<478;x++)
 	{
 		if(sample[x] > max)
 		{
@@ -30,10 +39,44 @@ void LCD_Display_Measurements(uint16_t sample[])
 		}
 	}
 	
-	//calc peak to peak voltage
+	//calc average
+	float avg = 0;
+	for(int x=0;x<478;x++)
+	{
+		avg+=sample[x];
+	}
+	avg = avg/478.0f;
+	
+	//Convert max min and avg into voltage values
+	max = max*(25.0f/320.0f);
+	min = min*(25.0f/320.0f);
+	avg = avg*(25.0f/320.0f);
+	
+	//Display Vmax
+	LCD_Draw_String(0,300,GREEN,BLACK,"Vmax",2);
+	char buf[5];
+	snprintf(buf,5,"%f",max);
+	LCD_Draw_String(50,300,GREEN,BLACK,buf,2);
+	
+	//Display Vmin
+	LCD_Draw_String(0,280,GREEN,BLACK,"Vmin",2);
+	snprintf(buf,5,"%f",min);
+	LCD_Draw_String(50,280,GREEN,BLACK,buf,2);
+	
+	//calc and display peak to peak voltage
 	volt = max-min;
-	//320 = 3.3V
-	volt = (volt*3.3f)/320.0f;
+	LCD_Draw_String(0,260,GREEN,BLACK,"Vpp",2);
+	snprintf(buf,5,"%f",volt);
+	LCD_Draw_String(50,260,GREEN,BLACK,buf,2);
+	
+	//Display average voltage
+	LCD_Draw_String(0,240,GREEN,BLACK,"Avg",2);
+	snprintf(buf,5,"%f",avg);
+	LCD_Draw_String(50,240,GREEN,BLACK,buf,2);
+	
+	
+
+	
 }
 
 void LCD_Init(void){
@@ -125,7 +168,6 @@ void LCD_Set_Address(uint16_t X1, uint16_t Y1, uint16_t X2, uint16_t Y2)
 
 void LCD_Draw_Color(uint16_t Color)
 {
-	//SENDS COLOR
 	unsigned char TempBuffer[2] = {Color>>8, Color};	
 	HAL_GPIO_WritePin(LCD_DC_PORT, LCD_DC_PIN, GPIO_PIN_SET);	
 	HAL_GPIO_WritePin(LCD_CS_PORT, LCD_CS_PIN, GPIO_PIN_RESET);
@@ -171,7 +213,6 @@ void LCD_Draw_Color_Burst(uint16_t Color, uint32_t Size)
 			}
 	}
 
-	//REMAINDER!
 	HAL_SPI_Transmit(HSPI_INSTANCE, (unsigned char *)burst_buffer, Remainder_from_block, 10);	
 		
 	HAL_GPIO_WritePin(LCD_CS_PORT, LCD_CS_PIN, GPIO_PIN_SET);

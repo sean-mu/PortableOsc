@@ -28,6 +28,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -68,10 +69,8 @@ static void MX_OPAMP1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 static uint16_t sample[480];
-static uint16_t lastSample[480];
-//int j;
-//int k;
-//int trigger;
+int scale = 0;
+int amp = 0;
 /* USER CODE END 0 */
 
 /**
@@ -107,10 +106,6 @@ int main(void)
   MX_ADC1_Init();
   MX_OPAMP1_Init();
   /* USER CODE BEGIN 2 */
-	//Delay to give time for LCD to power on before initializing
-	//char buf[6];
-	//snprintf(buf,6,"%u",x)
-	//LCD_Draw_String(100,50,GREEN,BLACK,buf,2)
 	HAL_Delay(1000);
 	HAL_OPAMP_MspInit(&hopamp1);
 	HAL_OPAMP_SelfCalibrate(&hopamp1);
@@ -123,43 +118,9 @@ int main(void)
 	
 	LCD_Fill_Screen(BLACK);
 	LCD_Draw_Grid();
-	//uint16_t ADCConvValue = 0;
-	//int dTime = 1;
-	uint16_t trigger = 0;
-	uint16_t input = 160;
-	
-	//int ADCY = 0;
-	/*for(uint16_t x = 0;x<480;x++)
-	{
-		if (HAL_ADC_PollForConversion(&hadc1, 100000) == HAL_OK)
-    {
-       sample[x] = HAL_ADC_GetValue(&hadc1)*320/4096;
-    }
-		HAL_Delay(dTime);
-	}
-	
-	for(uint16_t x=0;x<479;x++)
-	{
-		LCD_Line(YELLOW,x,x+1,sample[x],sample[x+1]);
-	}
+
 	
 	
-	HAL_Delay(5000);
-	
-	
-	for(uint16_t x=0;x<479;x++)
-	{
-		LCD_Line(BLACK,x,x+1,sample[x],sample[x+1]);
-	}
-	LCD_Draw_Grid();
-	
-	for(uint16_t x=0;x<479;x++)
-	{
-		LCD_Line(YELLOW,x,x+1,sample[x],sample[x+1]);
-	}*/
-	//LCD_Set_Rotation(1);
-	//LCD_Fill_Screen(BLACK);
-	//LCD_Draw_Grid();
 	
 	
   /* USER CODE END 2 */
@@ -168,43 +129,109 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		//handle triggering
-		//while(input < trigger)
-		//{
-			//if (HAL_ADC_PollForConversion(&hadc1, 1) == HAL_OK)
-		//	{
-			//	 input = HAL_ADC_GetValue(&hadc1)*3200/4096;
-			//}
-		//}
-		
-		//fill sample block
-		
-		for(uint16_t x = 0;x<479;x++)
+		//scale sets the x-axis scale 
+		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_7)==GPIO_PIN_RESET)
 		{
-			if (HAL_ADC_PollForConversion(&hadc1, 100000) == HAL_OK)
+			if(scale == 0)
 			{
-				 sample[x] = HAL_ADC_GetValue(&hadc1)*2909/4096;
+				scale=1;
 			}
-			//HAL_Delay(dTime);
+			else
+			{
+				scale = 0;
+			}
+			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_7)==GPIO_PIN_RESET)
+			{
+				__NOP();
+			};
 		}
 		
-		//draw new samples on tft
-
-		for(int x =0;x<478;x++)
+		//amp sets the amplification
+		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_6)==GPIO_PIN_RESET)
 		{
-				LCD_Line(BLACK,x,x+1,lastSample[x],lastSample[x+1]);
-				LCD_Line(YELLOW,x,x+1,sample[x],sample[x+1]);
+			if(amp == 0)
+			{
+				amp=1;
+			}
+			else
+			{
+				amp = 0;
+			}
+			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_6)==GPIO_PIN_RESET)
+			{
+				__NOP();
+			};
 		}
-		//redraw grid
-		LCD_Draw_Grid();
-		LCD_Display_Measurements(sample);
-
-		for(uint16_t x = 0;x<1000;x++)
+		
+		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_2)==GPIO_PIN_RESET)
 		{
-			lastSample[x] = sample[x];
+		//fill sample block
+			LCD_Fill_Screen(BLACK);
+			LCD_Draw_Grid();
+			
+			for(uint16_t x = 0;x<479;x++)
+			{
+				if (HAL_ADC_PollForConversion(&hadc1, 100000) == HAL_OK)
+				{
+					 sample[x] = HAL_ADC_GetValue(&hadc1)*390/4096;
+				}
+			}
+			
+			if(amp==1)
+			{
+				for(uint16_t x = 0;x<479;x++)
+				{
+					sample[x] = sample[x]*5;
+				}
+			}
+			
+			
+			//draw new samples on tft
+			if(scale==0)
+			{
+				for(int x =0;x<478;x++)
+				{
+						LCD_Line(YELLOW,x,x+1,sample[x],sample[x+1]);
+				}
+			}
+			if(scale==1)
+			{
+				int y = 0;
+				for(int x=0;x<478;x+=6)
+				{
+					LCD_Line(YELLOW,x,x+6,sample[y],sample[y+1]);
+					y+=1;
+				}
+			}
+			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_2)==GPIO_PIN_RESET)
+			{
+				__NOP();
+			};
+			
 		}	
+
+		
+		//Display measurements screen when button pressed
+		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==GPIO_PIN_RESET)
+		{
+			LCD_Display_Measurements(sample,amp);
+			uint16_t adcVal = 0;
+				if (HAL_ADC_PollForConversion(&hadc1, 100000) == HAL_OK)
+				{
+					adcVal = HAL_ADC_GetValue(&hadc1);
+				}
+			char buf[6];
+			LCD_Draw_String(0,220,GREEN,BLACK,"ADC 0x",2);
+			snprintf(buf,5,"%u",adcVal);
+			LCD_Draw_String(50,220,GREEN,BLACK,buf,2);
+			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==GPIO_PIN_RESET)
+			{
+				__NOP();
+			};
+		}
+			
 	
-		input = 0;
+		
 	
     /* USER CODE END WHILE */
 
@@ -295,7 +322,7 @@ static void MX_ADC1_Init(void)
   /** Common config 
   */
   hadc1.Instance = ADC1;
-  hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV256;
+  hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV8;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
@@ -422,19 +449,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOE_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, DC_Pin_Pin|CS_Pin_Pin|RST_Pin_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : BUTTON_1_Pin BUTTON_2_Pin */
-  GPIO_InitStruct.Pin = BUTTON_1_Pin|BUTTON_2_Pin;
+  /*Configure GPIO pins : PB2 PB3 PB6 PB7 */
+  GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_6|GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : DC_Pin_Pin CS_Pin_Pin RST_Pin_Pin */
   GPIO_InitStruct.Pin = DC_Pin_Pin|CS_Pin_Pin|RST_Pin_Pin;
